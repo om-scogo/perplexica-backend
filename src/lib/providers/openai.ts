@@ -21,7 +21,7 @@ export const loadOpenAIChatModels = async () => {
         displayName: 'GPT-4',
         model: new ChatOpenAI({
           openAIApiKey,
-          modelName: 'hehehe-gpt-4',
+          modelName: 'gpt-4',
           temperature: 0.7,
         }),
       },
