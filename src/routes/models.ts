@@ -13,8 +13,8 @@ router.get('/', async (req, res) => {
       getAvailableChatModelProviders(),
       getAvailableEmbeddingModelProviders(),
     ]);
-
     res.status(200).json({ chatModelProviders, embeddingModelProviders });
+    logger.info("Models returned successfully")
   } catch (err) {
     res.status(500).json({ message: 'An error has occurred.' });
     logger.error(err.message);

@@ -1,7 +1,7 @@
 import express from 'express';
 import logger from '../utils/logger';
-import { BaseChatModel } from 'langchain/chat_models/base';
-import { Embeddings } from 'langchain/embeddings/base';
+import { BaseChatModel } from "@langchain/core/language_models/chat_models";
+import { Embeddings } from "@langchain/core/embeddings";
 import { ChatOpenAI } from '@langchain/openai';
 import {
   getAvailableChatModelProviders,
@@ -61,15 +61,19 @@ router.post('/', async (req, res) => {
 
     const chatModelProvider =
       body.chatModel?.provider || Object.keys(chatModelProviders)[0];
+    console.log(chatModelProvider)
     const chatModel =
       body.chatModel?.model ||
       Object.keys(chatModelProviders[chatModelProvider])[0];
+    console.log(chatModel)
 
     const embeddingModelProvider =
       body.embeddingModel?.provider || Object.keys(embeddingModelProviders)[0];
+    console.log(embeddingModelProvider)
     const embeddingModel =
       body.embeddingModel?.model ||
       Object.keys(embeddingModelProviders[embeddingModelProvider])[0];
+    console.log(embeddingModel)
 
     let llm: BaseChatModel | undefined;
     let embeddings: Embeddings | undefined;
