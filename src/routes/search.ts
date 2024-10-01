@@ -69,11 +69,9 @@ router.post('/', async (req, res) => {
 
     const embeddingModelProvider =
       body.embeddingModel?.provider || Object.keys(embeddingModelProviders)[0];
-    console.log(embeddingModelProvider)
     const embeddingModel =
       body.embeddingModel?.model ||
       Object.keys(embeddingModelProviders[embeddingModelProvider])[0];
-    console.log(embeddingModel)
 
     let llm: BaseChatModel | undefined;
     let embeddings: Embeddings | undefined;
