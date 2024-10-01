@@ -114,6 +114,41 @@ const basicWebSearchResponsePrompt = `
 
 const strParser = new StringOutputParser();
 
+const handleStream = async (
+  stream: IterableReadableStream<StreamEvent>,
+  emitter: eventEmitter,
+) => {
+  for await (const event of stream) {
+    if (
+      event.event === 'on_chain_end' &&
+      event.name === 'FinalSourceRetriever'
+    ) {
+      emitter.emit(
+        'data',
+        JSON.stringify({ type: 'sources', data: event.data.output }),
+      );
+    }
+    if (
+      event.event === 'on_chain_stream' &&
+      event.name === 'FinalResponseGenerator'
+    ) {
+      emitter.emit(
+        'data',
+        JSON.stringify({ type: 'response', data: event.data.chunk }),
+      );
+    }
+    if (
+      event.event === 'on_chain_end' &&
+      event.name === 'FinalResponseGenerator'
+    ) {
+      emitter.emit('end');
+    }
+  }
+};
+
+// Start from here
+// DO NOT RUN THIS
+
 const extensiveWebSearch = (
   query: string,
   history: BaseMessage[],
@@ -124,6 +159,22 @@ const extensiveWebSearch = (
 
   try {
     // Add here something
+    const basicWebSearchAnsweringChain = createBasicWebSearchAnsweringChain(
+      llm,
+      embeddings,
+    );
+
+    const stream = basicWebSearchAnsweringChain.streamEvents(
+      {
+        chat_history: history,
+        query: query,
+      },
+      {
+        version: 'v1',
+      },
+    );
+
+    handleStream(stream, emitter);
   } catch (err) {
     emitter.emit(
       'error',

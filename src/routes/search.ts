@@ -61,11 +61,9 @@ router.post('/', async (req, res) => {
 
     const chatModelProvider =
       body.chatModel?.provider || Object.keys(chatModelProviders)[0];
-    console.log(chatModelProvider)
     const chatModel =
       body.chatModel?.model ||
       Object.keys(chatModelProviders[chatModelProvider])[0];
-    console.log(chatModel)
 
     const embeddingModelProvider =
       body.embeddingModel?.provider || Object.keys(embeddingModelProviders)[0];
